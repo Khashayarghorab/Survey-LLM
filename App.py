@@ -3,6 +3,7 @@ import pandas as pd
 import random
 import re
 import json
+import os
 from io import StringIO
 from google.oauth2 import service_account
 import gspread
@@ -331,9 +332,14 @@ def log_to_google_sheet(selection, model, question, task):
         """
         Logs the user's selection to Google Sheets.
         """
-        # Load credentials from the local file
-        with open("credentials.json") as f:
-            service_account_info = json.load(f)
+        # Check if running locally or on Streamlit Cloud
+        if os.path.exists("credentials.json"):
+            # Load credentials locally
+            with open("credentials.json") as f:
+                service_account_info = json.load(f)
+        else:
+            # Load credentials from Streamlit Cloud's st.secrets
+            service_account_info = st.secrets["gcp_service_account"]
 
         # Authenticate with Google Sheets API
         credentials = service_account.Credentials.from_service_account_info(
