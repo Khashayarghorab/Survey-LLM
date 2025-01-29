@@ -3,14 +3,25 @@ import os
 import autogen
 import os
 import time
+import streamlit as st
 
 def generate_jsa_response_A(task):
     # Retrieve the API key from the environment variable
-    api_key = os.getenv("OPENAI_API_KEY")
-    print('_'*100)
-    print('_'*100)
-    print('_'*100)
-    print(api_key)
+    # Check if running in Streamlit Cloud
+    api_key = None  # Default to None
+
+    try:
+        if "openai" in st.secrets:
+            api_key = st.secrets["openai"]["api_key"]  # Load from Streamlit secrets
+        else:
+            api_key = os.getenv("OPENAI_API_KEY")  # Load from environment variable
+        
+        if not api_key:
+            raise ValueError("API key is missing! Check Streamlit secrets or environment variables.")
+    
+    except FileNotFoundError:
+        api_key = os.getenv("OPENAI_API_KEY")  # Use environment variable if secrets.toml is missing
+     
     if not api_key:
         raise ValueError("API key for OpenAI is not set in the environment variables.")
 
@@ -50,8 +61,19 @@ Determine preventive measures for high and moderate-risk hazards. Compile all da
 
 def generate_jsa_response_B(task):
     # Retrieve the API key from the environment variable
-    api_key = os.getenv("OPENAI_API_KEY")
+    # Check if running in Streamlit Cloud
+    api_key = None  # Default to None
 
+    try:
+        if "openai" in st.secrets:
+            api_key = st.secrets["openai"]["api_key"]  # Load from Streamlit secrets
+        else:
+            api_key = os.getenv("OPENAI_API_KEY")  # Load from environment variable
+        
+           
+    except FileNotFoundError:
+        api_key = os.getenv("OPENAI_API_KEY")  # Use environment variable if secrets.toml is missing
+     
     if not api_key:
         raise ValueError("API key is missing. Please ensure the OPENAI_API_KEY environment variable is set.")
 
