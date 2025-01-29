@@ -1,6 +1,9 @@
 from openai import OpenAI
 import os
-
+from dotenv import load_dotenv
+import autogen
+import os
+import time
 
 def generate_jsa_response_A(task):
     # Retrieve the API key from the environment variable
@@ -44,9 +47,7 @@ Determine preventive measures for high and moderate-risk hazards. Compile all da
     # Return the content of the response
     return JSAAdvisor.choices[0].message.content
 
-import autogen
-import os
-import time
+
 
 def generate_jsa_response_B(task):
     # Retrieve the API key from the environment variable
