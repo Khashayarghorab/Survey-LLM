@@ -1,6 +1,6 @@
 from openai import OpenAI
 import os
-from dotenv import load_dotenv
+
 
 def generate_jsa_response_A(task):
     # Retrieve the API key from the environment variable
